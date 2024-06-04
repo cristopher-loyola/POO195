@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="all.css">
+    <link rel="stylesheet" href="w3.css">
+  </head>
+  <body>
+    <div id="container">
+      <h1>Estadísticas</h1>
+      <canvas id="barChart"></canvas>
+      <div id="results"></div>
+    </div>
+  </body>
+  <script src="chart.js"></script>
+  <script>
+    class SinglyList{
+      constructor(head){
+        this.head=head;
+        this.pointer=null;
+      }
+      getPreviousResults(position){
+        this.pointer=this.head;
+        for(i=0;i<=position;i++){
+          this.pointer=this.pointer.next;
+        }
+        return this.pointer.prevresults;
+      }
+    }
+    const list=new SinglyList(JSON.parse(localStorage.getItem('accesskeys')));
+    const position=parseFloat(localStorage.getItem("user-session"));
+    const prevresults=new Stack(list.getPreviousResults(position));
+    function showResults(categories) {
+      const resultadoDiv = document.getElementById('results');
+      resultadoDiv.innerHTML = `<h2>Resultado:</h2>
+      <p>Energía: ${categories.energy} puntos</p>
+      <p>Residuos: ${categories.waste} puntos</p>
+      <p>Transporte: ${categories.transport} puntos</p>`;
+    }
+    function showGraphics(categories) {
+      const ctx = document.getElementById('barChart').getContext('2d');
+      const barChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Energía', 'Residuos', 'Transporte'],
+          datasets: [{
+            label: 'Puntos por Categoría',
+            data: [categories.energy, categories.waste, categories.transport],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)'
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+    showResults(prevresults);
+    showGraphics(prevresults);
+  </script>
+</html>

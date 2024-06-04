@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <title>Test de Hábitos Sustentables</title>
+    <link rel="stylesheet" href="all.css">
+    <link rel="stylesheet" href="w3.css">
+  </head>
+<body>
+  <div id="container">
+    <h1>Test de Hábitos Sustentables</h1>
+    <form id="sustainableHabitsForm">
+      <!-- Categoría: Energía -->
+      <h2>Energía</h2>
+      <label>
+        <input type="radio" name="energy" value="1">
+        Apago los electrodomésticos cuando no los uso.
+    </label>
+        <label>
+        <input type="radio" name="energy" value="2">
+        Utilizo bombillas de bajo consumo.
+    </label>
+    <label>
+        <input type="radio" name="energy" value="3">
+        Uso energía renovable en mi hogar.
+    </label>
+    <!-- Categoría: Residuos -->
+    <h2>Residuos</h2>
+        <label>
+            <input type="radio" name="waste" value="1">
+            Reciclo papel, plástico y vidrio.
+        </label>
+        <label>
+            <input type="radio" name="waste" value="2">
+            Reduzco el uso de productos de un solo uso.
+        </label>
+        <label>
+            <input type="radio" name="waste" value="3">
+            Composto los residuos orgánicos.
+        </label>
+
+        <!-- Categoría: Transporte -->
+        <h2>Transporte</h2>
+        <label>
+            <input type="radio" name="transport" value="1">
+            Uso transporte público, bicicleta o camino.
+        </label>
+        <label>
+            <input type="radio" name="transport" value="2">
+            Comparto el vehículo con otras personas.
+        </label>
+        <label>
+            <input type="radio" name="transport" value="3">
+            Utilizo un vehículo eléctrico o híbrido.
+        </label>
+
+        <button type="button" onclick="calculateResult()" id="std-button" class="w3-button w3-round-large">Obtener Resultado</button>
+    </form>
+    <script>
+      class SinglyList{
+        constructor(head){
+          this.head=head;
+          this.pointer=null;
+        }
+        updateResults(position,newresults){
+          this.pointer=this.head;
+          for(i=0;i<=position;i++){
+            this.pointer=this.pointer.next;
+          }
+          this.pointer.prevresults=newresults;
+        }
+        getPreviousResults(position){
+          this.pointer=this.head;
+          for(i=0;i<=position;i++){
+            this.pointer=this.pointer.next;
+          }
+          return this.pointer.prevresults;
+        }
+      }
+      class Queue{
+        constructor(prevarray){
+          if(prevarray){
+            this.array=prevarray;
+          }else{
+            this.array=[]
+          }
+        }
+        enqueue(data){
+          if(this.array.length==10){
+            this.array.shift();
+          }
+          this.array.push(data);
+        }
+      }
+      const list=new SinglyList(JSON.parse(localStorage.getItem('accesskeys')));
+      const position=parseFloat(localStorage.getItem("user-session"));
+      const prevresults=new Stack(list.getPreviousResults(position));
+      const resultsQueue=new Queue(prevresults);
+      function calculateResult() {
+        const form = document.getElementById('sustainableHabitsForm');
+        const inputs = form.querySelectorAll('input:checked');
+        // Tabla hash para almacenar los resultados por categoría
+        const categories = {
+          energy: 0,
+          waste: 0,
+          transport: 0
+        };
+        inputs.forEach(input => {
+          const category = input.name;
+          categories[category] += parseInt(input.value);
+        });
+        resultsQueue.enqueue(categories);
+        list.updateResults(position,resultsQueue.array)
+      }
+    </script>
+  </div>
+</body>
+</html>
