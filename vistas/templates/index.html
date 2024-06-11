@@ -6,6 +6,17 @@
     <title>Formulario Albums</title>
 </head>
 <body>
+<!-- mensaje con jinja -->
+{%with msj= get_flashed_messages() %}
+{% if msj %}
+{% for mensaje in msj %}
+
+    <h1>{{mensaje}}</h1>
+
+    {%endfor%}
+    {%endif%}
+    {%endwith%}
+
     <form action="/GuardarAlbum" method="post">
 
 

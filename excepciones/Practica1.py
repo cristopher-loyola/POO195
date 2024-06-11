@@ -10,6 +10,7 @@ def verificarEdad():
         validacion = controlador.verificarEdadCont(edad)
     except ExcepcionEdadInvalida as e:
         print("Error", e)
+        
     
     if validacion == 1:
         lblVerif.config(text="Eres Mayor de edad",bg="green")
