@@ -8,7 +8,7 @@ app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'tbmedicos'
 
-app.secret_key = 'mysecretkey'  
+app.secret_key = 'mysecretkey'
 
 
 mysql = MySQL(app)
