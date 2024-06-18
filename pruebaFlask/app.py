@@ -13,7 +13,16 @@ mysql = MySQL(app)
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    try:
+        cursor= mysql.connection.cursor();
+        cursor.execute('select * from albums')
+        consultaA = cursor.fetchall()
+        print(consultaA)
+        return render_template('index.html')
+    except Exception as e:
+        print(e)
+        
+
 
 @app.route('/registro', methods=['GET', 'POST'])
 def formulario():

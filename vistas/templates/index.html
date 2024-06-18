@@ -29,12 +29,42 @@
 
 
         <label>Año</label>
-        <input type="number" name="txtAño">
+        <input type="number" name="txtAnio">
 
         <button type="submit">Guardar Album</button>
-
-
+        <br>
+        <br>
+        <br>
     </form>
     
+        <table>
+            <thead>
+                <tr>
+                    <td>ID:</td>
+                    <td>Album</td>
+                    <td>Artista</td>
+                    <td>Año: </td>
+                    <td>Operaciones</td>
+                </tr>
+            </thead>
+    
+
+
+
+    <tbody>
+        {%for album in albums %}
+        <tr>
+        <td>{{album.0}}</td>
+        <td>{{album.1}}</td>
+        <td>{{album.2}}</td>
+        <td>{{album.3}}</td>
+        <td><a href="#"> Editar</a></td>
+        <td><a href="#"> Borraar</a></td>
+
+        {%endfor%}
+    </tr>
+
+
+    </tbody>
 </body>
 </html>
