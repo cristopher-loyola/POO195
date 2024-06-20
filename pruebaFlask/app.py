@@ -39,11 +39,11 @@ def formulario():
                            (Fnombre, Frfc, Fcedula, Fcorreo, Fcontraseña, Frol))
             mysql.connection.commit()
             flash('Médico registrado correctamente')
-            return redirect(url_for('consultas'))  # Redirige a la ruta /consultas después del registro exitoso
+            return redirect(url_for('consultas')) 
         except Exception as e:
             print(f"Error al registrar el médico: {e}")
             flash('Error al registrar el médico: ' + str(e))
-            return redirect(url_for('formulario'))  # Redirige a la página de registro en caso de error
+            return redirect(url_for('formulario'))  
     
     return render_template('GuardarAlbum.html')
 
@@ -59,9 +59,6 @@ def consultas():
         return render_template('consultaMedicos.html',view='ConsultaMedicos', medicos=consultaA)
     except Exception as e:
         print(f"Error al realizar la consulta en la tabla tbmedicos: {e}")
-
-
-
 
 
 if __name__ == '__main__':
