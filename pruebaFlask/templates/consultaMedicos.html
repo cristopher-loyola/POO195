@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Médicos</title>
+</head>
+<body>
+    <h1>Lista de Médicos</h1>
+    <table >
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>RFC</th>
+            <th>Cédula Profesional</th>
+            <th>Correo Electrónico</th>
+            <th>Contraseña</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+        </tr>
+        {% for medico in medicos %}
+        <tr>
+            <td>{{ medico[0] }}</td>
+            <td>{{ medico[1] }}</td> 
+            <td>{{ medico[2] }}</td> 
+            <td>{{ medico[3] }}</td> 
+            <td>{{ medico[4] }}</td> 
+            <td>{{ medico[5] }}</td>
+            <td>{{ medico[6] }}</td> 
+            <td>
+                <a href="#">Editar</a> |
+                <a href="#">Borrar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

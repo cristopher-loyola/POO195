@@ -14,21 +14,19 @@ mysql = MySQL(app)
 @app.route('/')
 def home():
     try:
-        cursor= mysql.connection.cursor();
-        cursor.execute('select * from albums')
+        cursor = mysql.connection.cursor()
+        cursor.execute('SELECT * FROM albums')
         consultaA = cursor.fetchall()
         print(consultaA)
-        return render_template('index.html')
+        return render_template('index.html', albums=consultaA)
     except Exception as e:
-        print(e)
-        
-
+        print(f"Error al realizar la consulta en la tabla albums: {e}")
+        return render_template('index.html', albums=[])
 
 @app.route('/registro', methods=['GET', 'POST'])
 def formulario():
     if request.method == 'POST':
         try:
-            # Tomamos los datos que vienen por POST
             Fnombre = request.form['txtNombre']
             Frfc = request.form['txtRfc']
             Fcedula = request.form['txtCedula']
@@ -36,17 +34,35 @@ def formulario():
             Fcontraseña = request.form['txtContraseña']
             Frol = request.form['txtRol']
             
-            # Enviamos a la BD
             cursor = mysql.connection.cursor()
-            cursor.execute('INSERT INTO tbmedicos (nombre, rfc, cedulaP, correoE, contraseña, rol) VALUES (%s, %s, %s, %s, %s, %s)', (Fnombre, Frfc, Fcedula, Fcorreo, Fcontraseña, Frol))
+            cursor.execute('INSERT INTO tbmedicos (nombre, rfc, cedulaP, correoE, contraseña, rol) VALUES (%s, %s, %s, %s, %s, %s)', 
+                           (Fnombre, Frfc, Fcedula, Fcorreo, Fcontraseña, Frol))
             mysql.connection.commit()
             flash('Médico registrado correctamente')
-            return redirect(url_for('home'))
+            return redirect(url_for('consultas'))  # Redirige a la ruta /consultas después del registro exitoso
         except Exception as e:
+            print(f"Error al registrar el médico: {e}")
             flash('Error al registrar el médico: ' + str(e))
-            return redirect(url_for('formulario'))
+            return redirect(url_for('formulario'))  # Redirige a la página de registro en caso de error
+    
     return render_template('GuardarAlbum.html')
 
-if __name__ == '__main__':
-    app.run(port=2000, debug=True)
 
+
+@app.route('/consultas')
+def consultas():
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute('SELECT * FROM tbmedicos')
+        consultaA = cursor.fetchall()
+        print(consultaA)
+        return render_template('consultaMedicos.html',view='ConsultaMedicos', medicos=consultaA)
+    except Exception as e:
+        print(f"Error al realizar la consulta en la tabla tbmedicos: {e}")
+
+
+
+
+
+if __name__ == '__main__':
+    app.run(port=9000, debug=True)
