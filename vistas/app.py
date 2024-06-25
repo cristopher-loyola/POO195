@@ -19,14 +19,14 @@ def paginano(e):
 @app.route('/')
 def index():
     try:
-        cursor= mysql.connection.cursor();
-        cursor.execute('select * from albums')
+        cursor = mysql.connection.cursor()
+        cursor.execute('SELECT * FROM albums')
         consultaA = cursor.fetchall()
         print(consultaA)
         return render_template('index.html', albums=consultaA)
     except Exception as e:
         print(e)
-        
+        return 'Error al obtener los álbumes'
 
 @app.route('/GuardarAlbum', methods=['POST'])
 def guardarAlbum():
@@ -46,6 +46,34 @@ def guardarAlbum():
         except Exception as e:
             flash('Error al guardar el álbum: ' + str(e))
             return redirect(url_for('index'))
+
+@app.route('/editar/<id>')
+def editar(id):
+    cur= mysql.connection.cursor()
+    cur.execute('select * from albums where idAlbum=%s',[id])
+    albumE= cur.fetchone()
+    return render_template('editar.html', album= albumE)
+
+@app.route('/ActualizarAlbum/<id>', methods=['POST'])
+def ActualizarAlbum(id):
+    if request.method == 'POST':
+        try:
+            Ftitulo = request.form['txtTitulo']
+            Fartista = request.form['txtArtista']
+            Fanio = request.form['txtAnio']
+            
+            # Enviamos a la BD
+            cursor = mysql.connection.cursor()
+            cursor.execute('UPDATE albums set titulo=%s , artista=%s , anio=%s where idAlbum=%s', (Ftitulo, Fartista, Fanio, id))
+            mysql.connection.commit()
+            flash('Álbum editado correctamente')
+            return redirect(url_for('index'))
+        
+        except Exception as e:
+            flash('Error al guardar el álbum: ' + str(e))
+            return redirect(url_for('index'))
+
+
 
 if __name__ == '__main__':
     app.run(port=10000, debug=True)
