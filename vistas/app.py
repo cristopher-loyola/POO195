@@ -72,7 +72,19 @@ def ActualizarAlbum(id):
         except Exception as e:
             flash('Error al guardar el álbum: ' + str(e))
             return redirect(url_for('index'))
-
+        
+        
+@app.route('/eliminar/<id>')
+def eliminar(id):
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute('DELETE FROM albums WHERE idAlbum = %s', [id])
+        mysql.connection.commit()
+        flash('Álbum eliminado correctamente')
+        return redirect(url_for('index'))
+    except Exception as e:
+        flash('Error al eliminar el álbum: ' + str(e))
+        return redirect(url_for('index'))
 
 
 if __name__ == '__main__':

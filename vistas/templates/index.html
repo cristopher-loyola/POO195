@@ -59,12 +59,19 @@
         <td>{{album.2}}</td>
         <td>{{album.3}}</td>
         <td><a href="/editar/{{album.0}}"> Editar</a></td>
-        <td><a href="#"> Borraar</a></td>
+
+        <td><a href="/eliminar/{{album.0}}" onclick="return eliminar()"> Borrar</a></td>
 
         {%endfor%}
     </tr>
 
 
     </tbody>
+
 </body>
+<script>
+     function eliminar(){
+        return confirm("¿Seguro que quieres eliminar este dato?");
+        }
+</script>
 </html>
