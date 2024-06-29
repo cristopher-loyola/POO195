@@ -96,20 +96,19 @@ def ActualizarAlbum(id):
             flash('Error al actualizar el médico: ' + str(e))
             print(e)  # Imprime el error en la consola para depuración
             return redirect(url_for('home'))
-        
+                
 @app.route('/eliminar/<id>')
 def eliminar(id):
     try:
-        cur= mysql.connection.cursor()
-        cur.execute('delete from tbmedicos where id=%s',[id])
+        cur = mysql.connection.cursor()
+        cur.execute('DELETE FROM tbmedicos WHERE id = %s', (id,))
         consultaA= cur.fetchone()
+        mysql.connection.commit()
         flash('Se ha eliminado correctamente')
         return redirect(url_for('home'))
     except Exception as e:
-        flash('Error al eliminar' + str (e))
+        flash('Error al eliminar: ' + str(e))
         return redirect(url_for('home'))
-
-
         
 if __name__ == '__main__':
     app.run(port=9000, debug=True)
