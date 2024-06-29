@@ -12,6 +12,13 @@ app.secret_key = 'mysecretkey'
 mysql = MySQL(app)
 
 @app.route('/')
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        return redirect(url_for('home')) 
+    return render_template('login.html')
+
+@app.route('/home')
 def home():
     try:
         cursor = mysql.connection.cursor()
