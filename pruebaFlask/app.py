@@ -60,8 +60,49 @@ def consultas():
     except Exception as e:
         print(f"Error al realizar la consulta en la tabla tbmedicos: {e}")
         
+@app.route('/editar/<id>')
+def editar(id):
+    cur= mysql.connection.cursor()
+    cur.execute('select * from tbmedicos where id=%s',[id])
+    consultaA= cur.fetchone()
+    return render_template('editar.html', medicos= consultaA)  
+  
+@app.route('/ActualizarAlbum/<id>', methods=['POST'])
+def ActualizarAlbum(id):
+    if request.method == 'POST':
+        try:
+            Fnombre = request.form['txtNombre']
+            Frfc = request.form['txtRfc']
+            Fcedula = request.form['txtCedula']
+            Fcorreo = request.form['txtCorreo']
+            Fcontraseña = request.form['txtContraseña']
+            Frol = request.form['txtRol']
+            
+            # Enviamos a la BD
+            cursor = mysql.connection.cursor()
+            cursor.execute('UPDATE tbmedicos SET nombre=%s, rfc=%s, cedulaP=%s, correoE=%s, contraseña=%s, rol=%s WHERE id=%s', (Fnombre, Frfc, Fcedula, Fcorreo, Fcontraseña, Frol, id))
+            mysql.connection.commit()
+            flash('Médico actualizado correctamente')
+            return redirect(url_for('home'))
         
+        except Exception as e:
+            flash('Error al actualizar el médico: ' + str(e))
+            print(e)  # Imprime el error en la consola para depuración
+            return redirect(url_for('home'))
+        
+@app.route('/eliminar/<id>')
+def eliminar(id):
+    try:
+        cur= mysql.connection.cursor()
+        cur.execute('delete from tbmedicos where id=%s',[id])
+        consultaA= cur.fetchone()
+        flash('Se ha eliminado correctamente')
+        return redirect(url_for('home'))
+    except Exception as e:
+        flash('Error al eliminar' + str (e))
+        return redirect(url_for('home'))
 
 
+        
 if __name__ == '__main__':
     app.run(port=9000, debug=True)
