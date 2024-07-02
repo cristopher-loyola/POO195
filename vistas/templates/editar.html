@@ -1,11 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {%extends "plantilla.html"%}
+
+    
+    {%block body%}
+
     <title>Editar Albums</title>
-</head>
-<body>
+
 
     <form action="/ActualizarAlbum/{{album.0}}" method="post">
 
@@ -26,7 +25,6 @@
         <br>
         <br>
         <br>
-
+        {%endblock%}
 
     </tbody>
-</body>

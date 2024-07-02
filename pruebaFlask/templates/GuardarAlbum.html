@@ -39,11 +39,14 @@
             <div class="form-group">
                 <label for="txtContraseña">Contraseña:</label>
                 <input type="password" name="txtContraseña" id="txtContraseña" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="txtRol">Rol:</label>
-                <input type="text" name="txtRol" id="txtRol" class="form-control" required>
-            </div>
+                <div class="form-group">
+                    <label for="txtRol">Rol:</label>
+                    <select name="txtRol" id="txtRol" class="form-control" required>
+                        <option value="Medico admin">Medico admin</option>
+                        <option value="Medico">Medico</option>
+                    </select>
+                </div>
+                
             <button type="submit" class="btn btn-primary btn-block">Registrar</button>
         </form>
     </div>
