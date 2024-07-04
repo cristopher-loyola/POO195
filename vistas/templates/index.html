@@ -9,12 +9,13 @@
 
 
 
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong>{{mensaje}}</strong> You should check in on some of those fields below.
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
+
+      <script>
+        Swal.fire({
+          title: "Correcto",
+          text: "Album guardado con exito",
+          icon: "success"
+        });</script>
 
     {%endfor%}
     {%endif%}
@@ -25,28 +26,46 @@
         <div class="col-md-5">
             <!--aqui va el formulario -->
 
+            <div class="container">
+
             <form action="/GuardarAlbum" method="post">
 
-
-
+            <div class="mb-3">
                 <label>Titulo:</label>
-                <input type="text" name="txtTitulo">
-        
-                <label>Artista</label>
-                <input type="text" name="txtArtista">
-        
-        
-                <label>Año</label>
-                <input type="number" name="txtAnio">
-        
-                <button type="submit">Guardar Album</button>
-            </form>
+                <input type="text" name="txtTitulo" class="form-control">
+                
 
+            </div>
+
+                
+            <div class="mb-3">
+                <label>Titulo:</label>
+                <input type="text" name="txtTitulo" class="form-control">
+            </div>
+                
+            <div class="mb-3">
+                <label>Artista</label>
+                <input type="text" name="txtArtista" class="form-control">
+            </div>
+        
+            <div class="mb-3">
+                <label>Año</label>
+                <input type="number" name="txtAnio" class="form-control">
+                
+            </div>
+            
+
+        
+        
+                <button type="submit" class="btn btn-outline-success mt-3 mb-5" >Guardar Album</button>
+            </form>
+        </div>
         </div>  <!--cierra va el formulario -->
         <div class="col-md-7">
             <!--aqui va la tabla -->
+            <div class="container">
             
-            <table>
+            <table class="table table-bordered border-dark">
                 <thead>
                     <tr>
                         <td>ID:</td>
@@ -57,7 +76,7 @@
                     </tr>
                 </thead>
         
-    
+            </div>
     
     
         <tbody>
@@ -67,9 +86,9 @@
             <td>{{album.1}}</td>
             <td>{{album.2}}</td>
             <td>{{album.3}}</td>
-            <td><a href="/editar/{{album.0}}"> Editar</a></td>
+            <td><a href="/editar/{{album.0}}" class="btn btn-secondary"> Editar</a>
     
-            <td><a href="/eliminar/{{album.0}}" onclick="return eliminar()"> Borrar</a></td>
+            <a href="/eliminar/{{album.0}}"class="btn btn-dark" onclick="return eliminar()"> Borrar</a></td>
     
             {%endfor%}
         </tr>
