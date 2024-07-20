@@ -1,86 +1,93 @@
 {% extends "plantilla.html" %}
 {% block body %}
+
 <!-- mensaje con jinja -->
-{% with msj = get_flashed_messages() %}
-    {% if msj %}
-        {% for mensaje in msj %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
             <script>
                 Swal.fire({
-                    title: "Correcto",
-                    text: "Album guardado con exito",
-                    icon: "success"
+                    title: "{% if category == 'success' %}Correcto{% elif category == 'info' %}Editado{% elif category == 'danger' %}Eliminado{% endif %}",
+                    text: "{{ message }}",
+                    icon: "{% if category == 'success' %}success{% elif category == 'info' %}info{% elif category == 'danger' %}error{% endif %}"
                 });
             </script>
         {% endfor %}
     {% endif %}
 {% endwith %}
-<h2 class="text-center mt-5 mb-5 display-4 text-danger">Gestion de albums</h2>
+
+<h2 class="text-center mt-5 mb-5 display-4 text-danger">Gestión de álbumes</h2>
 
 <div class="row">
     <div class="col-md-5">
-        <!-- aqui va el formulario -->
-
+        <!-- Formulario para guardar álbum -->
         <div class="container">
-
             <form action="/GuardarAlbum" method="post" enctype="multipart/form-data">
-
                 <div class="mb-3">
-                    <label>Titulo:</label>
+                    <label for="titulo">Título:</label>
                     <input type="text" name="txtTitulo" class="form-control" required>
                 </div>
-
                 <div class="mb-3">
-                    <label>Artista</label>
+                    <label for="artista">Artista:</label>
                     <input type="text" name="txtArtista" class="form-control" required>
                 </div>
-
                 <div class="mb-3">
-                    <label>Año</label>
+                    <label for="anio">Año:</label>
                     <input type="number" name="txtAnio" class="form-control" required>
                 </div>
-
                 <div class="mb-3">
-                    <label>Portada</label>
+                    <label for="portada">Portada:</label>
                     <input type="file" name="portada" class="form-control" accept=".jpg,.jpeg,.png" required>
                 </div>
-
-                <button type="submit" class="btn btn-outline-success mt-3 mb-5">Guardar Album</button>
+                <button type="submit" class="btn btn-outline-success mt-3 mb-5">Guardar Álbum</button>
             </form>
         </div>
-    </div> <!-- cierra va el formulario -->
-    
+    </div>
+
     <div class="col-md-7">
-        <!-- aqui va la tabla -->
+        <!-- Tabla de álbumes -->
         <div class="container">
             <table class="table table-bordered border-dark">
                 <thead>
                     <tr>
-                        <td>ID:</td>
-                        <td>Album</td>
-                        <td>Artista</td>
-                        <td>Año:</td>
-                        <td>Portada:</td>
-                        <td>Operaciones</td>
+                        <th>ID</th>
+                        <th>Portada</th>
+                        <th>Título</th>
+                        <th>Artista</th>
+                        <th>Año</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for album in albums %}
                     <tr>
-                        <td>{{ album.0 }}</td>
-                        <td>{{ album.1 }}</td>
-                        <td>{{ album.2 }}</td>
-                        <td>{{ album.3 }}</td>
-                        <td><img src="{{ album.4 }}" alt="Portada" style="width: 100px; height: auto;"></td>
+                        <td>{{ album[0] }}</td>
                         <td>
-                            <a href="/editar/{{ album.0 }}" class="btn btn-secondary">Editar</a>
-                            <a href="/eliminar/{{ album.0 }}" class="btn btn-dark" onclick="return eliminar()">Borrar</a>
+                            {% if album[4] %}
+                            <img src="{{ url_for('uploaded_file', filename=album[4]) }}" alt="Portada" style="width: 100px; height: auto;">
+                            {% else %}
+                            <img src="{{ url_for('static', filename='IMG/default.jpg') }}" alt="Sin portada" style="width: 100px; height: auto;">
+                            {% endif %}
+                        </td>
+                        <td>{{ album[1] }}</td>
+                        <td>{{ album[2] }}</td>
+                        <td>{{ album[3] }}</td>
+                        <td>
+                            <a href="/editar/{{ album[0] }}" class="btn btn-warning">Editar</a>
+                            <a href="/eliminar/{{ album[0] }}" class="btn btn-danger" onclick="return confirmarEliminacion()">Eliminar</a>
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
-        </div> <!-- cierra la tabla -->
+        </div>
     </div>
 </div>
+
+<script>
+    function confirmarEliminacion() {
+        return confirm('¿Estás seguro de que deseas eliminar este álbum?');
+    }
+</script>
 
 {% endblock %}

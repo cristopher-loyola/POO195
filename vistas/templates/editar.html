@@ -22,12 +22,24 @@
             </div>
 
             <div class="mb-3">
-                <label>Portada actual:</label><br>
-                <img src="{{ album.4 }}" alt="Portada" style="width: 100px; height: auto;"><br><br>
-                <label>Cambiar portada:</label>
-                <input type="file" name="file" class="form-control" accept=".jpg,.jpeg,.png">
+                <label>Portada Actual:</label>
+                <div>
+                    {% if album[4] %}
+  
+                    <img src="{{ url_for('uploaded_file', filename=album[4]) }}" alt="Portada"
+                        style="width: 150px; height: 150px; display: block; margin-bottom: 10px;"> 
+                    {% else %}
+                    <img src="{{ url_for('static', filename='IMG/default.jpg') }}" alt="Sin portada"
+                        style="width: 150px; height: 150px; display: block; margin-bottom: 10px;">
+                    {% endif %}
+                </div>
             </div>
 
+            <div class="mb-3">
+                <label>Subir Nueva Portada:</label>
+                <input type="file" name="portada" accept=".jpg, .png" class="form-control">
+            </div>
+    
             <button type="submit" class="btn btn-outline-success mt-3 mb-5">Editar Album</button>
         </form>
     </div>

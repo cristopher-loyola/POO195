@@ -46,18 +46,22 @@ def guardarAlbum():
         Fanio = request.form['txtAnio']
         file = request.files['portada']
         
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename)) # Guardar archivo en la ruta especificada
-            
-            cursor = mysql.connection.cursor()
-            cursor.execute('INSERT INTO albums(titulo, artista, anio, portada) VALUES(%s, %s, %s, %s)', (Ftitulo, Fartista, Fanio, filename))
-            mysql.connection.commit()
-            flash('Álbum guardado correctamente', 'success')
-        else:
-            cursor = mysql.connection.cursor()
-            cursor.execute('INSERT INTO albums(titulo, artista, anio, portada) VALUES(%s, %s, %s, %s)', (Ftitulo, Fartista, Fanio, None))
-            mysql.connection.commit()
+        try:
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename)) 
+                
+                cursor = mysql.connection.cursor()
+                cursor.execute('INSERT INTO albums(titulo, artista, anio, portada) VALUES(%s, %s, %s, %s)', (Ftitulo, Fartista, Fanio, filename))
+                mysql.connection.commit()
+                flash('Álbum guardado correctamente', 'success')
+            else:
+                cursor = mysql.connection.cursor()
+                cursor.execute('INSERT INTO albums(titulo, artista, anio, portada) VALUES(%s, %s, %s, %s)', (Ftitulo, Fartista, Fanio, None))
+                mysql.connection.commit()
+                flash('Álbum guardado correctamente, sin portada', 'success')
+        
+        except Exception as e:
             flash('Error al guardar el álbum: ' + str(e), 'error')
         
         return redirect(url_for('index'))
@@ -76,7 +80,7 @@ def ActualizarAlbum(id):
             Ftitulo = request.form['txtTitulo']
             Fartista = request.form['txtArtista']
             Fanio = request.form['txtAnio']
-            file = request.files['portada']
+            file = request.files['file'] 
             
             cursor = mysql.connection.cursor()
 
@@ -93,7 +97,7 @@ def ActualizarAlbum(id):
         except Exception as e:
             flash('Error al guardar el álbum: ' + str(e))
         
-        return redirect(url_for('index'))  # Asegúrate de devolver una respuesta
+        return redirect(url_for('index'))  
 
 @app.route('/eliminar/<int:id>')
 def eliminar(id):
@@ -102,7 +106,7 @@ def eliminar(id):
             cur.execute('DELETE FROM albums WHERE idAlbum = %s', [id])
             mysql.connection.commit()
         
-        flash('Álbum eliminado correctamente', 'success')
+        flash('Álbum eliminado correctamente')
         return redirect(url_for('index'))
     
     except Exception as e:
