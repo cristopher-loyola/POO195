@@ -1,105 +1,86 @@
-{%extends "plantilla.html"%}
-{%block body%}
+{% extends "plantilla.html" %}
+{% block body %}
 <!-- mensaje con jinja -->
-{%with msj= get_flashed_messages() %}
-{% if msj %}
-{% for mensaje in msj %}
+{% with msj = get_flashed_messages() %}
+    {% if msj %}
+        {% for mensaje in msj %}
+            <script>
+                Swal.fire({
+                    title: "Correcto",
+                    text: "Album guardado con exito",
+                    icon: "success"
+                });
+            </script>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+<h2 class="text-center mt-5 mb-5 display-4 text-danger">Gestion de albums</h2>
 
+<div class="row">
+    <div class="col-md-5">
+        <!-- aqui va el formulario -->
 
+        <div class="container">
 
+            <form action="/GuardarAlbum" method="post" enctype="multipart/form-data">
 
+                <div class="mb-3">
+                    <label>Titulo:</label>
+                    <input type="text" name="txtTitulo" class="form-control" required>
+                </div>
 
+                <div class="mb-3">
+                    <label>Artista</label>
+                    <input type="text" name="txtArtista" class="form-control" required>
+                </div>
 
-      <script>
-        Swal.fire({
-          title: "Correcto",
-          text: "Album guardado con exito",
-          icon: "success"
-        });</script>
+                <div class="mb-3">
+                    <label>Año</label>
+                    <input type="number" name="txtAnio" class="form-control" required>
+                </div>
 
-    {%endfor%}
-    {%endif%}
-    {%endwith%}
-    <h2 class="text-center mt-5 mb-5 display-4 text-danger">Gestion de albums</h2>
-    
-    <div class="row">
-        <div class="col-md-5">
-            <!--aqui va el formulario -->
+                <div class="mb-3">
+                    <label>Portada</label>
+                    <input type="file" name="portada" class="form-control" accept=".jpg,.jpeg,.png" required>
+                </div>
 
-            <div class="container">
-
-            <form action="/GuardarAlbum" method="post">
-
-            <div class="mb-3">
-                <label>Titulo:</label>
-                <input type="text" name="txtTitulo" class="form-control">
-                
-
-            </div>
-
-                
-            <div class="mb-3">
-                <label>Titulo:</label>
-                <input type="text" name="txtTitulo" class="form-control">
-            </div>
-                
-            <div class="mb-3">
-                <label>Artista</label>
-                <input type="text" name="txtArtista" class="form-control">
-            </div>
-        
-            <div class="mb-3">
-                <label>Año</label>
-                <input type="number" name="txtAnio" class="form-control">
-                
-            </div>
-            
-
-        
-        
-                <button type="submit" class="btn btn-outline-success mt-3 mb-5" >Guardar Album</button>
+                <button type="submit" class="btn btn-outline-success mt-3 mb-5">Guardar Album</button>
             </form>
         </div>
-        </div>  <!--cierra va el formulario -->
-        <div class="col-md-7">
-            <!--aqui va la tabla -->
-            <div class="container">
-            
+    </div> <!-- cierra va el formulario -->
+    
+    <div class="col-md-7">
+        <!-- aqui va la tabla -->
+        <div class="container">
             <table class="table table-bordered border-dark">
                 <thead>
                     <tr>
                         <td>ID:</td>
                         <td>Album</td>
                         <td>Artista</td>
-                        <td>Año: </td>
+                        <td>Año:</td>
+                        <td>Portada:</td>
                         <td>Operaciones</td>
                     </tr>
                 </thead>
-        
-            </div>
-    
-    
-        <tbody>
-            {%for album in albums %}
-            <tr>
-            <td>{{album.0}}</td>
-            <td>{{album.1}}</td>
-            <td>{{album.2}}</td>
-            <td>{{album.3}}</td>
-            <td><a href="/editar/{{album.0}}" class="btn btn-secondary"> Editar</a>
-    
-            <a href="/eliminar/{{album.0}}"class="btn btn-dark" onclick="return eliminar()"> Borrar</a></td>
-    
-            {%endfor%}
-        </tr>
-        </tbody>
-        </table>
-        </div>  <!--cierra la tabla -->
-
+                <tbody>
+                    {% for album in albums %}
+                    <tr>
+                        <td>{{ album.0 }}</td>
+                        <td>{{ album.1 }}</td>
+                        <td>{{ album.2 }}</td>
+                        <td>{{ album.3 }}</td>
+                        <td><img src="{{ album.4 }}" alt="Portada" style="width: 100px; height: auto;"></td>
+                        <td>
+                            <a href="/editar/{{ album.0 }}" class="btn btn-secondary">Editar</a>
+                            <a href="/eliminar/{{ album.0 }}" class="btn btn-dark" onclick="return eliminar()">Borrar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div> <!-- cierra la tabla -->
     </div>
+</div>
 
-    
- 
-
-    {%endblock%}
-
+{% endblock %}

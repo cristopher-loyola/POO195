@@ -1,39 +1,40 @@
-    {%extends "plantilla.html"%}
+{% extends "plantilla.html" %}
+{% block body %}
 
-    
-    {%block body%}
+<title>Editar Albums</title>
+<div class="col-md-5">
+    <div class="container">
+        <form action="/ActualizarAlbum/{{ album.0 }}" method="post" enctype="multipart/form-data">
 
-    <title>Editar Albums</title>
-    <div class="col-md-5">
-<div class="container">
-    <form action="/ActualizarAlbum/{{album.0}}" method="post">
+            <div class="mb-3">
+                <label>Titulo:</label>
+                <input type="text" name="txtTitulo" value="{{ album.1 }}" class="form-control" required>
+            </div>
 
-<div class="mb-3">
+            <div class="mb-3">
+                <label>Artista:</label>
+                <input type="text" name="txtArtista" value="{{ album.2 }}" class="form-control" required>
+            </div>
 
-        <label>Titulo:</label>
-        <input type="text" name="txtTitulo" value="{{album.1}} " class="form-control">
+            <div class="mb-3">
+                <label>Año:</label>
+                <input type="number" name="txtAnio" value="{{ album.3 }}" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label>Portada actual:</label><br>
+                <img src="{{ album.4 }}" alt="Portada" style="width: 100px; height: auto;"><br><br>
+                <label>Cambiar portada:</label>
+                <input type="file" name="file" class="form-control" accept=".jpg,.jpeg,.png">
+            </div>
+
+            <button type="submit" class="btn btn-outline-success mt-3 mb-5">Editar Album</button>
+        </form>
     </div>
+</div>
 
-    <div class="mb-3">
+<br>
+<br>
+<br>
 
-        <label>Artista</label>
-        <input type="text" name="txtArtista"value="{{album.2}}" class="form-control">
-    </div>
-
-
-<div class="mb-3">
-        <label>Año</label>
-        <input type="number" name="txtAnio"value="{{album.3}}"class="form-control">
-    </div>
-
-        <button type="submit" class="btn btn-outline-success mt-3 mb-5">Editar Album</button>
-    </div>
-
-    </div>
-        <br>
-        <br>
-        <br>
-    </tbody>x
-        {%endblock%}
-
-
+{% endblock %}
